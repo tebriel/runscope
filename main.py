@@ -4,6 +4,7 @@ import logging
 import math
 import json
 import argparse
+import fcntl
 from os import path
 from datetime import datetime, timedelta
 from runscope import Runscope
@@ -44,7 +45,9 @@ def save_result(config, key, result):
     file_name = '%s.log' % (key)
     data_file_path = path.join(config['log_dir'], file_name)
     with open(data_file_path, 'a') as data:
+        fcntl.flock(data, fcntl.LOCK_EX)
         data.write("%s\n" % (json.dumps(result)))
+        fcntl.flock(data, fcntl.LOCK_UN)
 
 
 def load_config(config_path):
@@ -62,12 +65,18 @@ def configure_logging(config):
 
 def get_runscope_data(config, last_run):
     """Fetches all our runscope data we want"""
+    success = True
     rs = Runscope(config['runscope_auth'])
     for bucket in config['buckets']:
-        result = rs.get_bucket_messages(bucket, since=last_run, count=1000)
+        result = rs.get_bucket_messages(bucket, since=last_run, count=999)
         message = 'Fetched Bucket: %s with %d messages'
+        if result is None:
+            logging.error('No messages came back')
+            success = False
+            continue
         logging.debug(message, bucket, len(result))
         save_result(config, bucket, result)
+    return success
 
 
 if __name__ == '__main__':
@@ -80,6 +89,7 @@ if __name__ == '__main__':
     configure_logging(config)
 
     last_run = get_last_run()
-    get_runscope_data(config, last_run)
+    get_success = get_runscope_data(config, last_run)
 
-    save_last_run(math.floor(datetime.now().timestamp()))
+    if get_success:
+        save_last_run(math.floor(datetime.now().timestamp()))
