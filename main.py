@@ -3,6 +3,7 @@
 import logging
 import math
 import json
+import argparse
 from os import path
 from datetime import datetime, timedelta
 from runscope import Runscope
@@ -46,9 +47,9 @@ def save_result(config, key, result):
         data.write("%s\n" % (json.dumps(result)))
 
 
-def load_config():
+def load_config(config_path):
     """Loads our config from the config file"""
-    with open('config.json') as config_file:
+    with open(config_path) as config_file:
         config = json.load(config_file)
     return config
 
@@ -70,7 +71,12 @@ def get_runscope_data(config, last_run):
 
 
 if __name__ == '__main__':
-    config = load_config()
+    parser = argparse.ArgumentParser(prog='runscope',
+                                     description='Runscope Message Fetcher')
+
+    parser.add_argument('-f')
+    args = parser.parse_args()
+    config = load_config(args.f)
     configure_logging(config)
 
     last_run = get_last_run()
