@@ -9,7 +9,9 @@ from runscope import Runscope
 
 
 def get_last_run():
-    """Gets the UNIX timestamp of the last run"""
+    """Gets the UNIX timestamp of the last run
+    Gets now - 1 hour if no timestamp available
+    """
     try:
         with open('.last_run', 'r') as last_run_file:
             last_run = last_run_file.readline().strip()
@@ -37,6 +39,7 @@ def save_last_run(last_run):
 
 
 def save_result(config, key, result):
+    """Saves the result from the latest run to the bucket data file"""
     file_name = '%s.log' % (key)
     data_file_path = path.join(config['log_dir'], file_name)
     with open(data_file_path, 'a') as data:
@@ -44,17 +47,20 @@ def save_result(config, key, result):
 
 
 def load_config():
+    """Loads our config from the config file"""
     with open('config.json') as config_file:
         config = json.load(config_file)
     return config
 
 
 def configure_logging(config):
+    """Sets up our logging settings"""
     logfile = path.join(config['log_dir'], 'run.log')
     logging.basicConfig(filename=logfile, level=getattr(logging, 'DEBUG'))
 
 
 def get_runscope_data(config, last_run):
+    """Fetches all our runscope data we want"""
     rs = Runscope(config['runscope_auth'])
     for bucket in config['buckets']:
         result = rs.get_bucket_messages(bucket, since=last_run)
