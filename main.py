@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 
 import logging
 import math
@@ -15,7 +15,7 @@ def get_last_run():
     try:
         with open('.last_run', 'r') as last_run_file:
             last_run = last_run_file.readline().strip()
-    except OSError:
+    except (OSError, IOError):
         logging.warn('.last_run is missing, will recreate')
         last_run = ''
 
