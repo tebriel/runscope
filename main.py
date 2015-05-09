@@ -36,8 +36,9 @@ def save_last_run(last_run):
     logging.debug('Saved last_run as %d', last_run)
 
 
-def save_result(result):
-    with open('/var/log/runscope/data.log', 'a') as data:
+def save_result(config, result):
+    data_file_path = path.join(config['log_dir'], 'data.log')
+    with open(data_file_path, 'a') as data:
         data.write("%s\n" % (json.dumps(result)))
 
 
@@ -62,7 +63,7 @@ def get_runscope_data(config, last_run):
                                                             since=last_run)
             message = 'Found Bucket: %s with %d messages'
             logging.debug(message, bucket['name'], len(result[bucket['name']]))
-    save_result(result['PRS API'])
+    save_result(config, result['PRS API'])
 
 
 if __name__ == '__main__':
