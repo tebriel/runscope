@@ -10,10 +10,10 @@ them into the `<bucket_name>.log` file.
 ## Config ##
 
 Copy the [config.json.EXAMPLE](./config.json.EXAMPLE) to `config.json` to set
-up the app. You'll need to enter your runscope Key and where the log files
-should go.
+up the app. You'll need to enter your runscope Key, where the log files
+should go, and what buckets you'd like to fetch.
 
 ## Data ##
 
 Run logs will write to `config.json['log_dir']/run.log` and the data will be
-written to `config.json['log_dir']/data.log`
+written to `config.json['log_dir']/<bucket_key>.log`

@@ -36,8 +36,9 @@ def save_last_run(last_run):
     logging.debug('Saved last_run as %d', last_run)
 
 
-def save_result(config, result):
-    data_file_path = path.join(config['log_dir'], 'data.log')
+def save_result(config, key, result):
+    file_name = '%s.log' % (key)
+    data_file_path = path.join(config['log_dir'], file_name)
     with open(data_file_path, 'a') as data:
         data.write("%s\n" % (json.dumps(result)))
 
@@ -55,15 +56,11 @@ def configure_logging(config):
 
 def get_runscope_data(config, last_run):
     rs = Runscope(config['runscope_auth'])
-    result = {}
-    buckets = rs.get_buckets()
-    for bucket in buckets:
-        if bucket['key'] in config['buckets']:
-            result[bucket['name']] = rs.get_bucket_messages(bucket['key'],
-                                                            since=last_run)
-            message = 'Found Bucket: %s with %d messages'
-            logging.debug(message, bucket['name'], len(result[bucket['name']]))
-    save_result(config, result['PRS API'])
+    for bucket in config['buckets']:
+        result = rs.get_bucket_messages(bucket, since=last_run)
+        message = 'Fetched Bucket: %s with %d messages'
+        logging.debug(message, bucket, len(result))
+        save_result(config, bucket, result)
 
 
 if __name__ == '__main__':
