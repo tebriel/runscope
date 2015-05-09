@@ -1,4 +1,5 @@
 {
     "runscope_auth": "<AUTH_KEY>",
-    "log_dir": "/var/log/runscope"
+    "log_dir": "/var/log/runscope",
+    "buckets": ["bucket_key"]
 }

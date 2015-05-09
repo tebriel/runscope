@@ -58,7 +58,7 @@ def get_runscope_data(config, last_run):
     result = {}
     buckets = rs.get_buckets()
     for bucket in buckets:
-        if bucket['name'] == 'PRS API':
+        if bucket['key'] in config['buckets']:
             result[bucket['name']] = rs.get_bucket_messages(bucket['key'],
                                                             since=last_run)
             message = 'Found Bucket: %s with %d messages'
