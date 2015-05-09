@@ -64,7 +64,7 @@ def get_runscope_data(config, last_run):
     """Fetches all our runscope data we want"""
     rs = Runscope(config['runscope_auth'])
     for bucket in config['buckets']:
-        result = rs.get_bucket_messages(bucket, since=last_run)
+        result = rs.get_bucket_messages(bucket, since=last_run, count=1000)
         message = 'Fetched Bucket: %s with %d messages'
         logging.debug(message, bucket, len(result))
         save_result(config, bucket, result)
