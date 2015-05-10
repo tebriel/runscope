@@ -10,12 +10,12 @@ from datetime import datetime, timedelta
 from runscope import Runscope
 
 
-def get_last_run():
+def get_last_run(config):
     """Gets the UNIX timestamp of the last run
     Gets now - 1 hour if no timestamp available
     """
     try:
-        with open('.last_run', 'r') as last_run_file:
+        with open(config['last_run_path'], 'r') as last_run_file:
             last_run = last_run_file.readline().strip()
     except (OSError, IOError):
         logging.warn('.last_run is missing, will recreate')
@@ -32,9 +32,9 @@ def get_last_run():
     return last_run
 
 
-def save_last_run(last_run):
+def save_last_run(last_run, config):
     """Saves the UNIX timestamp of the current run"""
-    with open('.last_run', 'w') as last_run_file:
+    with open(config['last_run_path'], 'w') as last_run_file:
         last_run_file.write('%d' % (last_run))
 
     logging.debug('Saved last_run as %d', last_run)
@@ -92,8 +92,8 @@ if __name__ == '__main__':
     config = load_config(args.f)
     configure_logging(config)
 
-    last_run = get_last_run()
+    last_run = get_last_run(config)
     get_success = get_runscope_data(config, last_run, args.stdout)
 
     if get_success:
-        save_last_run(math.floor(datetime.now().timestamp()))
+        save_last_run(math.floor(datetime.now().timestamp()), config)

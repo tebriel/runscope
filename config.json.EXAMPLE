@@ -1,5 +1,6 @@
 {
     "runscope_auth": "<AUTH_KEY>",
     "log_dir": "/var/log/runscope",
-    "buckets": ["bucket_key"]
+    "buckets": ["bucket_key"],
+    "last_run_path": "./.last_run"
 }
