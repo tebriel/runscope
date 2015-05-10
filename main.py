@@ -76,7 +76,7 @@ def get_runscope_data(config, last_run, stdout):
             continue
         logging.debug(message, bucket, len(result))
         if stdout:
-            print(result)
+            print(json.dumps(result))
         else:
             save_result(config, bucket, result)
     return success
@@ -86,9 +86,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='runscope',
                                      description='Runscope Message Fetcher')
 
-    parser.add_argument('-f', '--file')
+    parser.add_argument('-f')
     parser.add_argument('--stdout', action='store_true')
-    parser.set_defaults(f='config.json')
     args = parser.parse_args()
     config = load_config(args.f)
     configure_logging(config)
@@ -97,4 +96,4 @@ if __name__ == '__main__':
     get_success = get_runscope_data(config, last_run, args.stdout)
 
     if get_success:
-            save_last_run(math.floor(datetime.now().timestamp()))
+        save_last_run(math.floor(datetime.now().timestamp()))
