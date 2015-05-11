@@ -52,8 +52,20 @@ def save_result(config, key, result):
 
 def load_config(config_path):
     """Loads our config from the config file"""
+    cwd = path.dirname(path.realpath(__file__))
+    if config_path is None:
+        config_path = path.join(cwd, 'config.json')
     with open(config_path) as config_file:
         config = json.load(config_file)
+
+    # Default for Last Run
+    if config.get('last_run_path') is None:
+        config['last_run_path'] = path.join(cwd, '.last_run')
+
+    # Default for Log Dir
+    if config.get('log_dir') is None:
+        config['log_dir'] = '/var/log/runscope'
+
     return config
 
 

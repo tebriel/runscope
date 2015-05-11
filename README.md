@@ -15,12 +15,26 @@ should go, and what buckets you'd like to fetch.
 
 ### Values ###
 
-*  `runscope_auth`: This is your Runscope API Auth Key
-*  `log_dir`: Where you'd like the app to log (make sure the app has
-   permission!)
-*  `buckets`: A list of the Bucket IDs you'd like to get messages for.
-*  `last_run_path`: The directory (relative to where you're running the app
-   from) where to store the last time we requested data.
+#### runscope_auth ####
+
+This is your Runscope API Auth Key
+
+#### log_dir ####
+
+Where you'd like the app to log (make sure the app has permission!)
+
+__Default__: `/var/log/runscope/`
+
+#### buckets ####
+
+A list of the Bucket IDs you'd like to get messages for.
+
+#### last_run_path ####
+
+The directory (relative to where you're running the app from) where to store
+the last time we requested data.
+
+__Default__: `./last_run`, relative to the path of `main.py`
 
 ## Data ##
 
