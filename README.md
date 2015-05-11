@@ -13,6 +13,15 @@ Copy the [config.json.EXAMPLE](./config.json.EXAMPLE) to `config.json` to set
 up the app. You'll need to enter your runscope Key, where the log files
 should go, and what buckets you'd like to fetch.
 
+### Values ###
+
+*  `runscope_auth`: This is your Runscope API Auth Key
+*  `log_dir`: Where you'd like the app to log (make sure the app has
+   permission!)
+*  `buckets`: A list of the Bucket IDs you'd like to get messages for.
+*  `last_run_path`: The directory (relative to where you're running the app
+   from) where to store the last time we requested data.
+
 ## Data ##
 
 Run logs will write to `config.json['log_dir']/run.log` and the data will be
