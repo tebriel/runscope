@@ -40,3 +40,6 @@ __Default__: `./last_run`, relative to the path of `main.py`
 
 Run logs will write to `config.json['log_dir']/run.log` and the data will be
 written to `config.json['log_dir']/<bucket_key>.log`
+
+Alternatively you can have the data written to stdout, by passing the
+`--stdout` flag, in this case the `<bucket_key>.log` will not be populated.
